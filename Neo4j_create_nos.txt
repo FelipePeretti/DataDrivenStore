@@ -1,0 +1,37 @@
+//criar um cliente
+CREATE (c:Cliente {
+    id_cliente: "1",
+    nome: "João Silva",
+    email: "joao.silva@email.com",
+    idade: 30,
+    localizacao: "São Paulo"
+})
+
+//criar uma marca
+CREATE (m:Marca {
+    id_marca: "M001",
+    nome: "XYZ Tech",
+    pais: "EUA"
+})
+
+//criar uma categoria
+CREATE (cat:Categoria {
+    id_categoria: "C001",
+    nome: "Eletrônicos",
+    descricao: "Produtos eletrônicos, como smartphones, computadores e gadgets"
+})
+
+//criar um produto
+CREATE (p:Produto {
+    id_produto: "P123",
+    nome: "Smartphone XYZ",
+    descricao: "Smartphone de última geração",
+    preco: 1999.99,
+    categoria: "Eletrônicos",
+    marca: "XYZ Tech"
+})
+
+
+
+
+
