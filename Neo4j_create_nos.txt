@@ -8,28 +8,195 @@ CREATE (c:Cliente {
 })
 
 //criar uma marca
-CREATE (m:Marca {
-    id_marca: "M001",
-    nome: "XYZ Tech",
-    pais: "EUA"
-})
+CREATE (m1:Marca {id_marca: "M001", nome: "XYZ Tech", pais: "EUA"})
+CREATE (m2:Marca {id_marca: "M002", nome: "Apple", pais: "EUA"})
+CREATE (m3:Marca {id_marca: "M003", nome: "FashionWear", pais: "Brasil"})
+CREATE (m4:Marca {id_marca: "M004", nome: "FitTech", pais: "EUA"})
+CREATE (m5:Marca {id_marca: "M005", nome: "TimeTech", pais: "EUA"})
+CREATE (m6:Marca {id_marca: "M006", nome: "GamerPro", pais: "China"})
+CREATE (m7:Marca {id_marca: "M007", nome: "Samsung", pais: "Coreia do Sul"})
+CREATE (m8:Marca {id_marca: "M008", nome: "ComfortFeet", pais: "Brasil"})
+CREATE (m9:Marca {id_marca: "M009", nome: "Canon", pais: "Japão"})
+CREATE (m10:Marca {id_marca: "M010", nome: "Dell", pais: "EUA"})
+CREATE (m11:Marca {id_marca: "M011", nome: "PowerX", pais: "EUA"})
+CREATE (m12:Marca {id_marca: "M012", nome: "AirFry", pais: "China"})
+CREATE (m13:Marca {id_marca: "M013", nome: "GameSeat", pais: "EUA"})
+CREATE (m14:Marca {id_marca: "M014", nome: "BrandPolo", pais: "Brasil"})
+CREATE (m15:Marca {id_marca: "M015", nome: "FashionBrand", pais: "França"})
+CREATE (m16:Marca {id_marca: "M016", nome: "LG", pais: "Coreia do Sul"})
+CREATE (m17:Marca {id_marca: "M017", nome: "Epson", pais: "Japão"})
 
-//criar uma categoria
-CREATE (cat:Categoria {
-    id_categoria: "C001",
-    nome: "Eletrônicos",
-    descricao: "Produtos eletrônicos, como smartphones, computadores e gadgets"
-})
 
-//criar um produto
-CREATE (p:Produto {
-    id_produto: "P123",
-    nome: "Smartphone XYZ",
-    descricao: "Smartphone de última geração",
-    preco: 1999.99,
-    categoria: "Eletrônicos",
-    marca: "XYZ Tech"
-})
+//criar as categorias
+CREATE (cat1:Categoria {id_categoria: "C001", nome: "Eletrônicos", descricao: "Produtos eletrônicos, como smartphones, computadores e gadgets"})
+CREATE (cat2:Categoria {id_categoria: "C002", nome: "Moda", descricao: "Produtos de vestuário, calçados e acessórios"})
+CREATE (cat3:Categoria {id_categoria: "C003", nome: "Acessórios", descricao: "Produtos de acessórios como relógios, mochilas e outros"})
+CREATE (cat4:Categoria {id_categoria: "C004", nome: "Fotografia", descricao: "Produtos relacionados a câmeras e equipamentos fotográficos"})
+CREATE (cat5:Categoria {id_categoria: "C005", nome: "Móveis", descricao: "Produtos para decoração e conforto de ambientes"})
+CREATE (cat6:Categoria {id_categoria: "C006", nome: "Eletrodomésticos", descricao: "Produtos para uso doméstico como fogões, geladeiras e fritadeiras"})
+
+//produtos 
+// Produto 1
+CREATE (p1:Produto {id_produto: "P123", nome: "Smartphone XYZ", descricao: "Smartphone de última geração", preco: 1999.99, categoria: "Eletrônicos", marca: "XYZ Tech", estoque: 150, data_adicao: date("2025-07-02"), status: "Disponível"})
+WITH p1
+MERGE (cat:Categoria {nome: "Eletrônicos"})
+MERGE (m:Marca {nome: "XYZ Tech"})
+CREATE (p1)-[:PERTENCE_A]->(cat)
+CREATE (p1)-[:MARCADO_POR]->(m)
+
+// Produto 2
+CREATE (p2:Produto {id_produto: "P124", nome: "Fone de ouvido XYZ", descricao: "Fone com cancelamento de ruído", preco: 299.99, categoria: "Eletrônicos", marca: "XYZ Sound", estoque: 200, data_adicao: date("2025-07-02"), status: "Disponível"})
+WITH p2
+MERGE (cat:Categoria {nome: "Eletrônicos"})
+MERGE (m:Marca {nome: "XYZ Sound"})
+CREATE (p2)-[:PERTENCE_A]->(cat)
+CREATE (p2)-[:MARCADO_POR]->(m)
+
+// Produto 3
+CREATE (p3:Produto {id_produto: "P125", nome: "Camiseta Básica", descricao: "Camiseta de algodão 100%", preco: 49.99, categoria: "Moda", marca: "FashionWear", estoque: 500, data_adicao: date("2025-07-02"), status: "Disponível"})
+WITH p3
+MERGE (cat:Categoria {nome: "Moda"})
+MERGE (m:Marca {nome: "FashionWear"})
+CREATE (p3)-[:PERTENCE_A]->(cat)
+CREATE (p3)-[:MARCADO_POR]->(m)
+
+// Produto 4
+CREATE (p4:Produto {id_produto: "P126", nome: "Laptop Dell", descricao: "Laptop de alta performance para jogos", preco: 4999.99, categoria: "Eletrônicos", marca: "Dell", estoque: 50, data_adicao: date("2025-07-02"), status: "Disponível"})
+WITH p4
+MERGE (cat:Categoria {nome: "Eletrônicos"})
+MERGE (m:Marca {nome: "Dell"})
+CREATE (p4)-[:PERTENCE_A]->(cat)
+CREATE (p4)-[:MARCADO_POR]->(m)
+
+// Produto 5
+CREATE (p5:Produto {id_produto: "P127", nome: "Tablet Samsung", descricao: "Tablet Android com tela de alta resolução", preco: 1500.00, categoria: "Eletrônicos", marca: "Samsung", estoque: 150, data_adicao: date("2025-07-02"), status: "Disponível"})
+WITH p5
+MERGE (cat:Categoria {nome: "Eletrônicos"})
+MERGE (m:Marca {nome: "Samsung"})
+CREATE (p5)-[:PERTENCE_A]->(cat)
+CREATE (p5)-[:MARCADO_POR]->(m)
+
+// Produto 6
+CREATE (p6:Produto {id_produto: "P128", nome: "Smartwatch Fit", descricao: "Smartwatch com monitoramento de saúde", preco: 899.00, categoria: "Eletrônicos", marca: "FitTech", estoque: 75, data_adicao: date("2025-07-02"), status: "Disponível"})
+WITH p6
+MERGE (cat:Categoria {nome: "Eletrônicos"})
+MERGE (m:Marca {nome: "FitTech"})
+CREATE (p6)-[:PERTENCE_A]->(cat)
+CREATE (p6)-[:MARCADO_POR]->(m)
+
+// Produto 7
+CREATE (p7:Produto {id_produto: "P129", nome: "Teclado Mecânico", descricao: "Teclado para gamers com switches mecânicos", preco: 399.00, categoria: "Eletrônicos", marca: "TechGaming", estoque: 100, data_adicao: date("2025-07-02"), status: "Disponível"})
+WITH p7
+MERGE (cat:Categoria {nome: "Eletrônicos"})
+MERGE (m:Marca {nome: "TechGaming"})
+CREATE (p7)-[:PERTENCE_A]->(cat)
+CREATE (p7)-[:MARCADO_POR]->(m)
+
+// Produto 8
+CREATE (p8:Produto {id_produto: "P130", nome: "Mouse RGB", descricao: "Mouse com iluminação RGB e sensibilidade ajustável", preco: 150.00, categoria: "Eletrônicos", marca: "GamerPro", estoque: 200, data_adicao: date("2025-07-02"), status: "Disponível"})
+WITH p8
+MERGE (cat:Categoria {nome: "Eletrônicos"})
+MERGE (m:Marca {nome: "GamerPro"})
+CREATE (p8)-[:PERTENCE_A]->(cat)
+CREATE (p8)-[:MARCADO_POR]->(m)
+
+// Produto 9
+CREATE (p9:Produto {id_produto: "P131", nome: "Camiseta Polo", descricao: "Camiseta polo de algodão", preco: 79.99, categoria: "Moda", marca: "BrandPolo", estoque: 300, data_adicao: date("2025-07-02"), status: "Disponível"})
+WITH p9
+MERGE (cat:Categoria {nome: "Moda"})
+MERGE (m:Marca {nome: "BrandPolo"})
+CREATE (p9)-[:PERTENCE_A]->(cat)
+CREATE (p9)-[:MARCADO_POR]->(m)
+
+// Produto 10
+CREATE (p10:Produto {id_produto: "P132", nome: "Tênis Casual", descricao: "Tênis confortável para uso diário", preco: 199.99, categoria: "Moda", marca: "ComfortFeet", estoque: 150, data_adicao: date("2025-07-02"), status: "Disponível"})
+WITH p10
+MERGE (cat:Categoria {nome: "Moda"})
+MERGE (m:Marca {nome: "ComfortFeet"})
+CREATE (p10)-[:PERTENCE_A]->(cat)
+CREATE (p10)-[:MARCADO_POR]->(m)
+
+// Produto 11
+CREATE (p11:Produto {id_produto: "P133", nome: "Relógio de Pulso", descricao: "Relógio elegante com pulseira de aço", preco: 249.99, categoria: "Acessórios", marca: "TimeTech", estoque: 120, data_adicao: date("2025-07-02"), status: "Disponível"})
+WITH p11
+MERGE (cat:Categoria {nome: "Acessórios"})
+MERGE (m:Marca {nome: "TimeTech"})
+CREATE (p11)-[:PERTENCE_A]->(cat)
+CREATE (p11)-[:MARCADO_POR]->(m)
+
+// Produto 12
+CREATE (p12:Produto {id_produto: "P134", nome: "Câmera Digital", descricao: "Câmera com lente de alta qualidade", preco: 1999.00, categoria: "Fotografia", marca: "Canon", estoque: 50, data_adicao: date("2025-07-02"), status: "Disponível"})
+WITH p12
+MERGE (cat:Categoria {nome: "Fotografia"})
+MERGE (m:Marca {nome: "Canon"})
+CREATE (p12)-[:PERTENCE_A]->(cat)
+CREATE (p12)-[:MARCADO_POR]->(m)
+
+// Produto 13
+CREATE (p13:Produto {id_produto: "P135", nome: "AirPods Pro", descricao: "Fones de ouvido com cancelamento de ruído", preco: 1199.00, categoria: "Eletrônicos", marca: "Apple", estoque: 250, data_adicao: date("2025-07-02"), status: "Disponível"})
+WITH p13
+MERGE (cat:Categoria {nome: "Eletrônicos"})
+MERGE (m:Marca {nome: "Apple"})
+CREATE (p13)-[:PERTENCE_A]->(cat)
+CREATE (p13)-[:MARCADO_POR]->(m)
+
+// Produto 14
+CREATE (p14:Produto {id_produto: "P136", nome: "Cadeira Gamer", descricao: "Cadeira ergonômica para longas horas de jogo", preco: 899.00, categoria: "Móveis", marca: "GameSeat", estoque: 80, data_adicao: date("2025-07-02"), status: "Disponível"})
+WITH p14
+MERGE (cat:Categoria {nome: "Móveis"})
+MERGE (m:Marca {nome: "GameSeat"})
+CREATE (p14)-[:PERTENCE_A]->(cat)
+CREATE (p14)-[:MARCADO_POR]->(m)
+
+// Produto 15
+CREATE (p15:Produto {id_produto: "P137", nome: "Monitor LED", descricao: "Monitor de 27 polegadas com resolução 4K", preco: 2500.00, categoria: "Eletrônicos", marca: "LG", estoque: 60, data_adicao: date("2025-07-02"), status: "Disponível"})
+WITH p15
+MERGE (cat:Categoria {nome: "Eletrônicos"})
+MERGE (m:Marca {nome: "LG"})
+CREATE (p15)-[:PERTENCE_A]->(cat)
+CREATE (p15)-[:MARCADO_POR]->(m)
+
+// Produto 16
+CREATE (p16:Produto {id_produto: "P138", nome: "Projetor Full HD", descricao: "Projetor com excelente qualidade de imagem", preco: 1800.00, categoria: "Eletrônicos", marca: "Epson", estoque: 40, data_adicao: date("2025-07-02"), status: "Disponível"})
+WITH p16
+MERGE (cat:Categoria {nome: "Eletrônicos"})
+MERGE (m:Marca {nome: "Epson"})
+CREATE (p16)-[:PERTENCE_A]->(cat)
+CREATE (p16)-[:MARCADO_POR]->(m)
+
+// Produto 17
+CREATE (p17:Produto {id_produto: "P139", nome: "Power Bank", descricao: "Carregador portátil para dispositivos móveis", preco: 120.00, categoria: "Eletrônicos", marca: "PowerX", estoque: 300, data_adicao: date("2025-07-02"), status: "Disponível"})
+WITH p17
+MERGE (cat:Categoria {nome: "Eletrônicos"})
+MERGE (m:Marca {nome: "PowerX"})
+CREATE (p17)-[:PERTENCE_A]->(cat)
+CREATE (p17)-[:MARCADO_POR]->(m)
+
+// Produto 18
+CREATE (p18:Produto {id_produto: "P140", nome: "Fritadeira Elétrica", descricao: "Fritadeira sem óleo", preco: 350.00, categoria: "Eletrodomésticos", marca: "AirFry", estoque: 150, data_adicao: date("2025-07-02"), status: "Disponível"})
+WITH p18
+MERGE (cat:Categoria {nome: "Eletrodomésticos"})
+MERGE (m:Marca {nome: "AirFry"})
+CREATE (p18)-[:PERTENCE_A]->(cat)
+CREATE (p18)-[:MARCADO_POR]->(m)
+
+// Produto 19
+CREATE (p19:Produto {id_produto: "P141", nome: "Sofá 3 Lugares", descricao: "Sofá confortável com tecido macio", preco: 1500.00, categoria: "Móveis", marca: "RelaxHome", estoque: 30, data_adicao: date("2025-07-02"), status: "Disponível"})
+WITH p19
+MERGE (cat:Categoria {nome: "Móveis"})
+MERGE (m:Marca {nome: "RelaxHome"})
+CREATE (p19)-[:PERTENCE_A]->(cat)
+CREATE (p19)-[:MARCADO_POR]->(m)
+
+// Produto 20
+CREATE (p20:Produto {id_produto: "P142", nome: "Cadeira de Escritório", descricao: "Cadeira ergonômica para conforto durante o trabalho", preco: 850.00, categoria: "Móveis", marca: "RelaxHome", estoque: 45, data_adicao: date("2025-07-02"), status: "Disponível"})
+WITH p20
+MERGE (cat:Categoria {nome: "Móveis"})
+MERGE (m:Marca {nome: "RelaxHome"})
+CREATE (p20)-[:PERTENCE_A]->(cat)
+CREATE (p20)-[:MARCADO_POR]->(m)
+
+
 
 
 
