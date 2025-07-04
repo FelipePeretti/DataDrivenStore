@@ -1,0 +1,76 @@
+CREATE TABLE Logs_evento
+(
+    id_evento String,              -- ID do Evento
+    id_usuario String(50),         -- ID do Usuário
+    data_evento DateTime,          -- Data e Hora do Evento
+    tipo_evento String(50),        -- Tipo do Evento
+    id_produto String(50),         -- ID do Produto
+    categoria_produto String(50),  -- Categoria do Produto
+    descricao_evento String(255),  -- Descrição do Evento
+    localizacao_usuario String(100), -- Localização do Usuário
+    PRIMARY KEY (id_evento)        -- Chave Primária
+) 
+ENGINE = MergeTree()
+ORDER BY id_evento;
+
+CREATE TABLE Consulta_analitica
+(
+    id_analitica String,           -- ID da Análise
+    id_usuario String(50),         -- ID do Usuário
+    data_inicio DateTime,          -- Data de Início da Análise
+    data_fim DateTime,             -- Data de Fim da Análise
+    tipo_analitica String(50),     -- Tipo de Análise
+    resultado String(255),         -- Resultado da Análise
+    categoria_produto String(50),  -- Categoria do Produto
+    localizacao_usuario String(100), -- Localização do Usuário
+    PRIMARY KEY (id_analitica)     -- Chave Primária
+)
+ENGINE = MergeTree()
+ORDER BY id_analitica;
+
+
+//logs de eventos
+INSERT INTO Logs_evento VALUES
+('E001', 'U001', '2025-07-03 12:30:00', 'Compra', 'P123', 'Eletrônicos', 'Compra de smartphone', 'São Paulo'),
+('E002', 'U002', '2025-07-03 14:30:00', 'Visualização', 'P124', 'Moda', 'Visualização de camiseta', 'Rio de Janeiro'),
+('E003', 'U003', '2025-07-03 15:00:00', 'Compra', 'P125', 'Acessórios', 'Compra de fone de ouvido', 'Belo Horizonte'),
+('E004', 'U004', '2025-07-03 16:00:00', 'Pesquisa', 'P126', 'Eletrônicos', 'Pesquisa sobre tablet', 'Salvador'),
+('E005', 'U005', '2025-07-03 17:30:00', 'Compra', 'P127', 'Eletrodomésticos', 'Compra de fritadeira elétrica', 'Curitiba'),
+('E006', 'U006', '2025-07-03 18:00:00', 'Visualização', 'P128', 'Moda', 'Visualização de camiseta polo', 'Fortaleza'),
+('E007', 'U007', '2025-07-03 19:00:00', 'Compra', 'P129', 'Eletrônicos', 'Compra de teclado mecânico', 'Manaus'),
+('E008', 'U008', '2025-07-03 20:00:00', 'Pesquisa', 'P130', 'Acessórios', 'Pesquisa sobre mouse RGB', 'Recife'),
+('E009', 'U009', '2025-07-03 21:30:00', 'Compra', 'P131', 'Moda', 'Compra de relógio de pulso', 'São Paulo'),
+('E010', 'U010', '2025-07-03 22:00:00', 'Visualização', 'P132', 'Móveis', 'Visualização de sofá 3 lugares', 'Rio de Janeiro'),
+('E011', 'U011', '2025-07-03 23:30:00', 'Compra', 'P133', 'Eletrônicos', 'Compra de AirPods Pro', 'Belo Horizonte'),
+('E012', 'U012', '2025-07-04 01:00:00', 'Pesquisa', 'P134', 'Acessórios', 'Pesquisa sobre cadeira gamer', 'Salvador'),
+('E013', 'U013', '2025-07-04 02:00:00', 'Compra', 'P135', 'Fotografia', 'Compra de câmera digital', 'Curitiba'),
+('E014', 'U014', '2025-07-04 03:30:00', 'Visualização', 'P136', 'Móveis', 'Visualização de cadeira de escritório', 'Fortaleza'),
+('E015', 'U015', '2025-07-04 05:00:00', 'Compra', 'P137', 'Eletrônicos', 'Compra de monitor LED', 'Manaus'),
+('E016', 'U016', '2025-07-04 06:30:00', 'Visualização', 'P138', 'Eletrônicos', 'Visualização de projetor full HD', 'Recife'),
+('E017', 'U017', '2025-07-04 08:00:00', 'Compra', 'P139', 'Eletrônicos', 'Compra de power bank', 'São Paulo'),
+('E018', 'U018', '2025-07-04 09:30:00', 'Pesquisa', 'P140', 'Eletrodomésticos', 'Pesquisa sobre fritadeira elétrica', 'Rio de Janeiro'),
+('E019', 'U019', '2025-07-04 10:00:00', 'Compra', 'P141', 'Móveis', 'Compra de sofá 3 lugares', 'Belo Horizonte'),
+('E020', 'U020', '2025-07-04 11:30:00', 'Visualização', 'P142', 'Móveis', 'Visualização de cadeira de escritório', 'Salvador');
+
+//contas analiticas
+INSERT INTO Consulta_analitica VALUES
+('A001', 'U001', '2025-07-01 08:00:00', '2025-07-02 08:00:00', 'Compra de produtos', 'Sucesso', 'Eletrônicos', 'São Paulo'),
+('A002', 'U002', '2025-06-30 08:00:00', '2025-07-01 08:00:00', 'Análise de visualização', 'Falha', 'Moda', 'Rio de Janeiro'),
+('A003', 'U003', '2025-06-28 08:00:00', '2025-06-29 08:00:00', 'Análise de compras', 'Sucesso', 'Acessórios', 'Belo Horizonte'),
+('A004', 'U004', '2025-06-25 10:00:00', '2025-06-26 10:00:00', 'Pesquisa sobre tablet', 'Sucesso', 'Eletrônicos', 'Salvador'),
+('A005', 'U005', '2025-06-23 08:00:00', '2025-06-24 08:00:00', 'Análise de produtos comprados', 'Falha', 'Eletrodomésticos', 'Curitiba'),
+('A006', 'U006', '2025-06-20 12:00:00', '2025-06-21 12:00:00', 'Pesquisa de visualização', 'Sucesso', 'Moda', 'Fortaleza'),
+('A007', 'U007', '2025-06-18 10:00:00', '2025-06-19 10:00:00', 'Análise de compras de acessórios', 'Sucesso', 'Acessórios', 'Manaus'),
+('A008', 'U008', '2025-06-16 09:00:00', '2025-06-17 09:00:00', 'Análise de mouse RGB', 'Falha', 'Acessórios', 'Recife'),
+('A009', 'U009', '2025-06-14 08:30:00', '2025-06-15 08:30:00', 'Relatório de compras de relógios', 'Sucesso', 'Moda', 'São Paulo'),
+('A010', 'U010', '2025-06-12 10:00:00', '2025-06-13 10:00:00', 'Análise sobre sofá 3 lugares', 'Falha', 'Móveis', 'Rio de Janeiro'),
+('A011', 'U011', '2025-06-10 08:00:00', '2025-06-11 08:00:00', 'Análise de AirPods', 'Sucesso', 'Eletrônicos', 'Belo Horizonte'),
+('A012', 'U012', '2025-06-08 09:00:00', '2025-06-09 09:00:00', 'Pesquisa sobre cadeira gamer', 'Falha', 'Acessórios', 'Salvador'),
+('A013', 'U013', '2025-06-06 10:30:00', '2025-06-07 10:30:00', 'Relatório sobre câmeras digitais', 'Sucesso', 'Fotografia', 'Curitiba'),
+('A014', 'U014', '2025-06-04 12:00:00', '2025-06-05 12:00:00', 'Análise de cadeira de escritório', 'Sucesso', 'Móveis', 'Fortaleza'),
+('A015', 'U015', '2025-06-02 14:00:00', '2025-06-03 14:00:00', 'Monitor LED de 27 polegadas', 'Sucesso', 'Eletrônicos', 'Manaus'),
+('A016', 'U016', '2025-05-31 15:00:00', '2025-06-01 15:00:00', 'Análise de projetores full HD', 'Sucesso', 'Eletrônicos', 'Recife'),
+('A017', 'U017', '2025-05-29 12:30:00', '2025-05-30 12:30:00', 'Análise de power bank', 'Sucesso', 'Eletrônicos', 'São Paulo'),
+('A018', 'U018', '2025-05-27 13:00:00', '2025-05-28 13:00:00', 'Pesquisa sobre fritadeiras elétricas', 'Sucesso', 'Eletrodomésticos', 'Rio de Janeiro'),
+('A019', 'U019', '2025-05-25 10:30:00', '2025-05-26 10:30:00', 'Análise de sofá 3 lugares', 'Sucesso', 'Móveis', 'Belo Horizonte'),
+('A020', 'U020', '2025-05-23 09:00:00', '2025-05-24 09:00:00', 'Análise de cadeiras de escritório', 'Sucesso', 'Móveis', 'Salvador');
