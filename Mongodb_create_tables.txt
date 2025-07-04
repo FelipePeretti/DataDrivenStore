@@ -1,26 +1,227 @@
 use trabalho  // Certifique-se de que está no banco de dados 'trabalho'
 
 db.produtos.insertMany([
-    { nome: "Smartphone ABC", descricao: "Smartphone com ótima performance", preco: 1599.99, categoria: "Eletrônicos", marca: "ABC Tech", estoque: 100, data_adicao: new Date(), status: "Disponível" },
-    { nome: "Fone de ouvido XYZ", descricao: "Fone com cancelamento de ruído", preco: 299.99, categoria: "Eletrônicos", marca: "XYZ Sound", estoque: 200, data_adicao: new Date(), status: "Disponível" },
-    { nome: "Camiseta Básica", descricao: "Camiseta de algodão 100%", preco: 49.99, categoria: "Moda", marca: "FashionWear", estoque: 500, data_adicao: new Date(), status: "Disponível" },
-    { nome: "Laptop Dell", descricao: "Laptop de alta performance para jogos", preco: 4999.99, categoria: "Eletrônicos", marca: "Dell", estoque: 50, data_adicao: new Date(), status: "Disponível" },
-    { nome: "Tablet Samsung", descricao: "Tablet Android com tela de alta resolução", preco: 1500.00, categoria: "Eletrônicos", marca: "Samsung", estoque: 150, data_adicao: new Date(), status: "Disponível" },
-    { nome: "Smartwatch Fit", descricao: "Smartwatch com monitoramento de saúde", preco: 899.00, categoria: "Eletrônicos", marca: "FitTech", estoque: 75, data_adicao: new Date(), status: "Disponível" },
-    { nome: "Teclado Mecânico", descricao: "Teclado para gamers com switches mecânicos", preco: 399.00, categoria: "Eletrônicos", marca: "TechGaming", estoque: 100, data_adicao: new Date(), status: "Disponível" },
-    { nome: "Mouse RGB", descricao: "Mouse com iluminação RGB e sensibilidade ajustável", preco: 150.00, categoria: "Eletrônicos", marca: "GamerPro", estoque: 200, data_adicao: new Date(), status: "Disponível" },
-    { nome: "Camiseta Polo", descricao: "Camiseta polo de algodão", preco: 79.99, categoria: "Moda", marca: "BrandPolo", estoque: 300, data_adicao: new Date(), status: "Disponível" },
-    { nome: "Tênis Casual", descricao: "Tênis confortável para uso diário", preco: 199.99, categoria: "Moda", marca: "ComfortFeet", estoque: 150, data_adicao: new Date(), status: "Disponível" },
-    { nome: "Relógio de Pulso", descricao: "Relógio elegante com pulseira de aço", preco: 249.99, categoria: "Acessórios", marca: "TimeTech", estoque: 120, data_adicao: new Date(), status: "Disponível" },
-    { nome: "Câmera Digital", descricao: "Câmera com lente de alta qualidade", preco: 1999.00, categoria: "Fotografia", marca: "Canon", estoque: 50, data_adicao: new Date(), status: "Disponível" },
-    { nome: "AirPods Pro", descricao: "Fones de ouvido com cancelamento de ruído", preco: 1199.00, categoria: "Eletrônicos", marca: "Apple", estoque: 250, data_adicao: new Date(), status: "Disponível" },
-    { nome: "Cadeira Gamer", descricao: "Cadeira ergonômica para longas horas de jogo", preco: 899.00, categoria: "Móveis", marca: "GameSeat", estoque: 80, data_adicao: new Date(), status: "Disponível" },
-    { nome: "Monitor LED", descricao: "Monitor de 27 polegadas com resolução 4K", preco: 2500.00, categoria: "Eletrônicos", marca: "LG", estoque: 60, data_adicao: new Date(), status: "Disponível" },
-    { nome: "Projetor Full HD", descricao: "Projetor com excelente qualidade de imagem", preco: 1800.00, categoria: "Eletrônicos", marca: "Epson", estoque: 40, data_adicao: new Date(), status: "Disponível" },
-    { nome: "Power Bank", descricao: "Carregador portátil para dispositivos móveis", preco: 120.00, categoria: "Eletrônicos", marca: "PowerX", estoque: 300, data_adicao: new Date(), status: "Disponível" },
-    { nome: "Fritadeira Elétrica", descricao: "Fritadeira sem óleo", preco: 350.00, categoria: "Eletrodomésticos", marca: "AirFry", estoque: 150, data_adicao: new Date(), status: "Disponível" },
-    { nome: "Sofá 3 Lugares", descricao: "Sofá confortável com tecido macio", preco: 1500.00, categoria: "Móveis", marca: "RelaxHome", estoque: 30, data_adicao: new Date(), status: "Disponível" }
-])
+  {
+    id_produto: "P123",
+    nome: "Smartphone XYZ",
+    descricao: "Smartphone de última geração",
+    preco: 1999.99,
+    categoria: "Eletrônicos",
+    marca: "XYZ Tech",
+    estoque: 150,
+    data_adicao: new Date("2025-07-02"),
+    status: "Disponível"
+  },
+  {
+    id_produto: "P124",
+    nome: "Fone de ouvido XYZ",
+    descricao: "Fone com cancelamento de ruído",
+    preco: 299.99,
+    categoria: "Eletrônicos",
+    marca: "XYZ Sound",
+    estoque: 200,
+    data_adicao: new Date("2025-07-02"),
+    status: "Disponível"
+  },
+  {
+    id_produto: "P125",
+    nome: "Camiseta Básica",
+    descricao: "Camiseta de algodão 100%",
+    preco: 49.99,
+    categoria: "Moda",
+    marca: "FashionWear",
+    estoque: 500,
+    data_adicao: new Date("2025-07-02"),
+    status: "Disponível"
+  },
+  {
+    id_produto: "P126",
+    nome: "Laptop Dell",
+    descricao: "Laptop de alta performance para jogos",
+    preco: 4999.99,
+    categoria: "Eletrônicos",
+    marca: "Dell",
+    estoque: 50,
+    data_adicao: new Date("2025-07-02"),
+    status: "Disponível"
+  },
+  {
+    id_produto: "P127",
+    nome: "Tablet Samsung",
+    descricao: "Tablet Android com tela de alta resolução",
+    preco: 1500.00,
+    categoria: "Eletrônicos",
+    marca: "Samsung",
+    estoque: 150,
+    data_adicao: new Date("2025-07-02"),
+    status: "Disponível"
+  },
+  {
+    id_produto: "P128",
+    nome: "Smartwatch Fit",
+    descricao: "Smartwatch com monitoramento de saúde",
+    preco: 899.00,
+    categoria: "Eletrônicos",
+    marca: "FitTech",
+    estoque: 75,
+    data_adicao: new Date("2025-07-02"),
+    status: "Disponível"
+  },
+  {
+    id_produto: "P129",
+    nome: "Teclado Mecânico",
+    descricao: "Teclado para gamers com switches mecânicos",
+    preco: 399.00,
+    categoria: "Eletrônicos",
+    marca: "TechGaming",
+    estoque: 100,
+    data_adicao: new Date("2025-07-02"),
+    status: "Disponível"
+  },
+  {
+    id_produto: "P130",
+    nome: "Mouse RGB",
+    descricao: "Mouse com iluminação RGB e sensibilidade ajustável",
+    preco: 150.00,
+    categoria: "Eletrônicos",
+    marca: "GamerPro",
+    estoque: 200,
+    data_adicao: new Date("2025-07-02"),
+    status: "Disponível"
+  },
+  {
+    id_produto: "P131",
+    nome: "Camiseta Polo",
+    descricao: "Camiseta polo de algodão",
+    preco: 79.99,
+    categoria: "Moda",
+    marca: "BrandPolo",
+    estoque: 300,
+    data_adicao: new Date("2025-07-02"),
+    status: "Disponível"
+  },
+  {
+    id_produto: "P132",
+    nome: "Tênis Casual",
+    descricao: "Tênis confortável para uso diário",
+    preco: 199.99,
+    categoria: "Moda",
+    marca: "ComfortFeet",
+    estoque: 150,
+    data_adicao: new Date("2025-07-02"),
+    status: "Disponível"
+  },
+  {
+    id_produto: "P133",
+    nome: "Relógio de Pulso",
+    descricao: "Relógio elegante com pulseira de aço",
+    preco: 249.99,
+    categoria: "Acessórios",
+    marca: "TimeTech",
+    estoque: 120,
+    data_adicao: new Date("2025-07-02"),
+    status: "Disponível"
+  },
+  {
+    id_produto: "P134",
+    nome: "Câmera Digital",
+    descricao: "Câmera com lente de alta qualidade",
+    preco: 1999.00,
+    categoria: "Fotografia",
+    marca: "Canon",
+    estoque: 50,
+    data_adicao: new Date("2025-07-02"),
+    status: "Disponível"
+  },
+  {
+    id_produto: "P135",
+    nome: "AirPods Pro",
+    descricao: "Fones de ouvido com cancelamento de ruído",
+    preco: 1199.00,
+    categoria: "Eletrônicos",
+    marca: "Apple",
+    estoque: 250,
+    data_adicao: new Date("2025-07-02"),
+    status: "Disponível"
+  },
+  {
+    id_produto: "P136",
+    nome: "Cadeira Gamer",
+    descricao: "Cadeira ergonômica para longas horas de jogo",
+    preco: 899.00,
+    categoria: "Móveis",
+    marca: "GameSeat",
+    estoque: 80,
+    data_adicao: new Date("2025-07-02"),
+    status: "Disponível"
+  },
+  {
+    id_produto: "P137",
+    nome: "Monitor LED",
+    descricao: "Monitor de 27 polegadas com resolução 4K",
+    preco: 2500.00,
+    categoria: "Eletrônicos",
+    marca: "LG",
+    estoque: 60,
+    data_adicao: new Date("2025-07-02"),
+    status: "Disponível"
+  },
+  {
+    id_produto: "P138",
+    nome: "Projetor Full HD",
+    descricao: "Projetor com excelente qualidade de imagem",
+    preco: 1800.00,
+    categoria: "Eletrônicos",
+    marca: "Epson",
+    estoque: 40,
+    data_adicao: new Date("2025-07-02"),
+    status: "Disponível"
+  },
+  {
+    id_produto: "P139",
+    nome: "Power Bank",
+    descricao: "Carregador portátil para dispositivos móveis",
+    preco: 120.00,
+    categoria: "Eletrônicos",
+    marca: "PowerX",
+    estoque: 300,
+    data_adicao: new Date("2025-07-02"),
+    status: "Disponível"
+  },
+  {
+    id_produto: "P140",
+    nome: "Fritadeira Elétrica",
+    descricao: "Fritadeira sem óleo",
+    preco: 350.00,
+    categoria: "Eletrodomésticos",
+    marca: "AirFry",
+    estoque: 150,
+    data_adicao: new Date("2025-07-02"),
+    status: "Disponível"
+  },
+  {
+    id_produto: "P141",
+    nome: "Sofá 3 Lugares",
+    descricao: "Sofá confortável com tecido macio",
+    preco: 1500.00,
+    categoria: "Móveis",
+    marca: "RelaxHome",
+    estoque: 30,
+    data_adicao: new Date("2025-07-02"),
+    status: "Disponível"
+  },
+  {
+    id_produto: "P142",
+    nome: "Cadeira de Escritório",
+    descricao: "Cadeira ergonômica para conforto durante o trabalho",
+    preco: 850.00,
+    categoria: "Móveis",
+    marca: "RelaxHome",
+    estoque: 45,
+    data_adicao: new Date("2025-07-02"),
+    status: "Disponível"
+  }
+]);
 
 use trabalho  // Certifique-se de que está no banco de dados 'trabalho'
 
