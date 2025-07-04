@@ -1,0 +1,55 @@
+******** User_session *********
+
+# 1. Criar uma sessão de usuário
+HSET session:abc123def456 user_id "001" last_activity "1706788800" login_time "1706785200"
+
+# Definir um tempo de vida para a sessão
+EXPIRE session:abc123def456 3600
+
+# 2. Verificar a sessão criada
+HGETALL session:abc123def456
+TTL session:abc123def456
+
+******** User_cart *********
+
+# 1. Adicionar o primeiro item ao carrinho do usuário 001
+HSET cart:user:001 "prod:X123" '{"quantity": 1, "price_added": 29.99, "name": "Fone de Ouvido Bluetooth", "SKU": "v1"}'
+
+# 2. Adicionar o segundo item ao mesmo carrinho
+HSET cart:user:001 "prod:Y456" '{"quantity": 2, "price_added": 15.50, "name": "Cabo USB-C", "SKU": "v2"}'
+
+# Definir um tempo de vida para o carrinho (ex: 86400 segundos = 24 horas)
+EXPIRE cart:user:001 86400
+
+# 3. Verificar o conteúdo do carrinho
+HGETALL cart:user:001
+TTL cart:user:001
+
+******** User_preferences *********
+
+# 1. Definir as preferências para o usuário 001
+HSET user:settings:user:001 language "pt-BR" currency "BRL" theme "dark" notifications_enabled "true"
+
+# Definir um tempo de vida para as preferências (ex: 604800 segundos = 7 dias)
+EXPIRE user:settings:user:001 604800
+
+# 2. Verificar as preferências
+HGETALL user:settings:user:001
+TTL user:settings:user:001
+
+******** User_products_viewed *********
+
+# 1. Adicionar produtos visualizados (ordem de LPUSH importa - último visualizado vai para o topo)
+LPUSH user:viewed_products:user:001 "prod:999"
+LPUSH user:viewed_products:user:001 "prod:888"
+LPUSH user:viewed_products:user:001 "prod:777"
+
+# Manter apenas os 5 últimos produtos visualizados na lista (TRIM)
+LTRIM user:viewed_products:user:001 0 4
+
+# Definir um tempo de vida para o histórico (ex: 2592000 segundos = 30 dias)
+EXPIRE user:viewed_products:user:001 2592000
+
+# 2. Verificar a lista de produtos visualizados
+LRANGE user:viewed_products:user:001 0 -1
+TTL user:viewed_products:user:001
