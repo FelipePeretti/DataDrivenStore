@@ -1,0 +1,116 @@
+
+-- criar tabela Clientes
+CREATE TABLE Clientes (
+    id_cliente SERIAL PRIMARY KEY,    -- ID do Cliente (autoincremento)
+    nome VARCHAR(100) NOT NULL,       -- Nome do Cliente
+    email VARCHAR(100) NOT NULL,      -- Email do Cliente
+    telefone VARCHAR(20),             -- Telefone do Cliente
+    endereco TEXT                     -- Endereço do Cliente
+);
+
+-- criar tabela Pedidos
+CREATE TABLE Pedidos (
+    id_pedido SERIAL PRIMARY KEY,         -- ID do Pedido (autoincremento)
+    id_cliente INT NOT NULL,              -- ID do Cliente (chave estrangeira)
+    data_pedido TIMESTAMP NOT NULL,       -- Data do Pedido
+    status_pedido VARCHAR(50) NOT NULL,   -- Status do Pedido (Ex: 'Pendente', 'Finalizado', etc.)
+    CONSTRAINT fk_cliente
+        FOREIGN KEY (id_cliente)
+        REFERENCES Clientes (id_cliente)  -- Relaciona com a tabela Clientes
+        ON DELETE CASCADE                 -- Exclui os pedidos associados quando o cliente for deletado
+);
+
+
+-- criar tabela Itens do Pedido
+CREATE TABLE Itens_do_Pedido (
+    id_item SERIAL PRIMARY KEY,            -- ID do Item (autoincremento)
+    id_pedido INT NOT NULL,                -- ID do Pedido (chave estrangeira)
+    id_produto INT NOT NULL,               -- ID do Produto (chave estrangeira)
+    quantidade INT NOT NULL,               -- Quantidade do Produto no Pedido
+    preco_unitario DECIMAL(10, 2) NOT NULL, -- Preço unitário do Produto
+    CONSTRAINT fk_pedido
+        FOREIGN KEY (id_pedido)
+        REFERENCES Pedidos (id_pedido)    -- Relaciona com a tabela Pedidos
+        ON DELETE CASCADE                  -- Exclui os itens associados quando o pedido for deletado
+    -- Assumimos que a tabela Produtos já exista, onde id_produto é a chave estrangeira.
+);
+
+-- criar tabela Transacoes Financeiras
+CREATE TABLE Transacoes_Financeiras (
+    id_transacao SERIAL PRIMARY KEY,      -- ID da Transação (autoincremento)
+    id_pedido INT NOT NULL,               -- ID do Pedido (chave estrangeira)
+    data_transacao TIMESTAMP NOT NULL,    -- Data da Transação
+    valor DECIMAL(10, 2) NOT NULL,        -- Valor da Transação
+    metodo_pagamento VARCHAR(50) NOT NULL, -- Método de Pagamento (Ex: 'Cartão', 'Boleto', etc.)
+    CONSTRAINT fk_pedido_transacao
+        FOREIGN KEY (id_pedido)
+        REFERENCES Pedidos (id_pedido)  -- Relaciona com a tabela Pedidos
+        ON DELETE CASCADE                -- Exclui a transação quando o pedido for deletado
+);
+
+-- Inserir dados na tabela Clientes
+INSERT INTO Clientes (nome, email, telefone, endereco) VALUES
+('João Silva', 'joao.silva@email.com', '1234-5678', 'Rua A, 123, São Paulo'),
+('Maria Oliveira', 'maria.oliveira@email.com', '2345-6789', 'Rua B, 456, Rio de Janeiro'),
+('Carlos Souza', 'carlos.souza@email.com', '3456-7890', 'Rua C, 789, Belo Horizonte'),
+('Ana Pereira', 'ana.pereira@email.com', '4567-8901', 'Rua D, 101, Curitiba'),
+('Fernanda Costa', 'fernanda.costa@email.com', '5678-9012', 'Rua E, 202, Fortaleza'),
+('Lucas Almeida', 'lucas.almeida@email.com', '6789-0123', 'Rua F, 303, Salvador'),
+('Juliana Santos', 'juliana.santos@email.com', '7890-1234', 'Rua G, 404, Recife'),
+('Rafael Oliveira', 'rafael.oliveira@email.com', '8901-2345', 'Rua H, 505, Manaus'),
+('Beatriz Lima', 'beatriz.lima@email.com', '9012-3456', 'Rua I, 606, São Paulo'),
+('Eduardo Costa', 'eduardo.costa@email.com', '0123-4567', 'Rua J, 707, Porto Alegre');
+
+-- Inserir dados na tabela Pedidos
+INSERT INTO Pedidos (id_cliente, data_pedido, status_pedido) VALUES
+(1, '2025-07-03 12:30:00', 'Pendente'),
+(2, '2025-07-03 13:00:00', 'Finalizado'),
+(3, '2025-07-03 14:30:00', 'Pendente'),
+(4, '2025-07-03 15:00:00', 'Cancelado'),
+(5, '2025-07-03 15:30:00', 'Pendente'),
+(6, '2025-07-03 16:00:00', 'Finalizado'),
+(7, '2025-07-03 16:30:00', 'Pendente'),
+(8, '2025-07-03 17:00:00', 'Finalizado'),
+(9, '2025-07-03 17:30:00', 'Pendente'),
+(10, '2025-07-03 18:00:00', 'Finalizado'),
+(1, '2025-07-04 10:00:00', 'Pendente'),
+(2, '2025-07-04 11:00:00', 'Finalizado'),
+(3, '2025-07-04 12:00:00', 'Pendente'),
+(4, '2025-07-04 13:00:00', 'Cancelado'),
+(5, '2025-07-04 14:00:00', 'Pendente');
+
+-- Inserir dados na tabela Itens do Pedido
+INSERT INTO Itens_do_Pedido (id_pedido, id_produto, quantidade, preco_unitario) VALUES
+(1, 101, 2, 150.00),
+(2, 102, 1, 200.00),
+(3, 103, 3, 75.00),
+(4, 104, 1, 450.00),
+(5, 105, 2, 120.00),
+(6, 106, 1, 320.00),
+(7, 107, 4, 99.99),
+(8, 108, 3, 250.00),
+(9, 109, 2, 180.00),
+(10, 110, 1, 600.00),
+(11, 101, 2, 150.00),
+(12, 102, 1, 200.00),
+(13, 103, 1, 75.00),
+(14, 104, 1, 450.00),
+(15, 105, 2, 120.00);
+
+-- Inserir dados na tabela Transacoes Financeiras
+INSERT INTO Transacoes_Financeiras (id_pedido, data_transacao, valor, metodo_pagamento) VALUES
+(1, '2025-07-03 13:30:00', 300.00, 'Cartão de Crédito'),
+(2, '2025-07-03 14:00:00', 200.00, 'Boleto Bancário'),
+(3, '2025-07-03 14:45:00', 225.00, 'Cartão de Débito'),
+(4, '2025-07-03 15:30:00', 450.00, 'Cartão de Crédito'),
+(5, '2025-07-03 16:00:00', 240.00, 'Pix'),
+(6, '2025-07-03 16:30:00', 320.00, 'Cartão de Crédito'),
+(7, '2025-07-03 17:30:00', 399.96, 'Boleto Bancário'),
+(8, '2025-07-03 18:00:00', 750.00, 'Cartão de Crédito'),
+(9, '2025-07-03 18:30:00', 360.00, 'Pix'),
+(10, '2025-07-03 19:00:00', 600.00, 'Cartão de Débito'),
+(11, '2025-07-04 10:30:00', 300.00, 'Cartão de Crédito'),
+(12, '2025-07-04 11:30:00', 200.00, 'Boleto Bancário'),
+(13, '2025-07-04 12:30:00', 75.00, 'Pix'),
+(14, '2025-07-04 13:30:00', 450.00, 'Cartão de Crédito'),
+(15, '2025-07-04 14:30:00', 240.00, 'Cartão de Débito');
