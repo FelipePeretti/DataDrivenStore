@@ -1,0 +1,164 @@
+1. Simular Login de Usuário
+# Simular login de um usuário com ID 123
+# Usamos HASH para armazenar múltiplos atributos da sessão.
+# Chave: session:<ID_DA_SESSAO>
+# Valor: Hash com user_id, timestamp de login, timestamp da última atividade, IP, user_agent
+
+# Gerar um ID de sessão único (na aplicação, isso seria um UUID)
+# Para este exemplo manual, usaremos um ID de sessão fixo para demonstração.
+# Digite este comando no seu redis-cli:
+
+# --- Comando para simular o login ---
+HSET session:user:4b9d3e5c user_id "123" login_time "1720051200" last_activity "1720051200" ip_address "192.168.1.100" user_agent "Chrome/120.0"
+# Definir expiração para a sessão em 3600 segundos (1 hora de inatividade)
+EXPIRE session:user:4b9d3e5c 3600
+
+# --- Verificações (para confirmar) ---
+# Recuperar todos os campos da sessão
+HGETALL session:user:4b9d3e5c
+# Verificar o tempo restante de vida da sessão (em segundos)
+TTL session:user:4b9d3e5c
+
+2. Gerenciar um Carrinho de Compras
+# Assumimos um ID de usuário/sessão para o carrinho, por exemplo, 'user:567'.
+# O carrinho será um HASH onde cada campo é um item do produto (ID do produto)
+# e o valor é um JSON string com detalhes do item.
+
+# --- Adicionar itens ao carrinho ---
+# Adicionar 2 unidades do produto P123 (Smartphone XYZ)
+HSET cart:user:567 "P123" '{"quantity": 2, "price_added": 1999.99, "name": "Smartphone XYZ"}'
+# Adicionar 1 unidade do produto P456 (Teclado Mecânico)
+HSET cart:user:567 "P456" '{"quantity": 1, "price_added": 350.00, "name": "Teclado Mecânico"}'
+
+# --- Atualizar a quantidade de um item no carrinho ---
+# (Na aplicação, você leria o JSON, atualizaria a quantidade e faria um novo HSET)
+# Simulando a atualização de P123 para 3 unidades:
+HSET cart:user:567 "P123" '{"quantity": 3, "price_added": 1999.99, "name": "Smartphone XYZ"}'
+
+# --- Definir expiração para o carrinho (ex: 24 horas) ---
+EXPIRE cart:user:567 86400
+
+# --- Remover um item do carrinho ---
+HDEL cart:user:567 "P456"
+
+# --- Visualizar o conteúdo atual do carrinho ---
+HGETALL cart:user:567
+
+# --- Verificar o tempo restante de vida do carrinho ---
+TTL cart:user:567
+
+3. Implementar Cache de Produtos
+# Vamos simular o processo para o produto com id_produto: "P123"
+# Estrutura do produto no MongoDB (para referência):
+# {
+#    id_produto: "P123",
+#    nome: "Smartphone XYZ",
+#    descricao: "Smartphone de última geração",
+#    preco: 1999.99,
+#    categoria: "Eletrônicos",
+#    marca: "XYZ Tech",
+#    estoque: 150,
+#    data_adicao: new Date("2025-07-02"),
+#    status: "Disponível"
+# }
+
+# Chave do cache para o produto P123: cache:product:P123
+# Tipo de Dado: STRING (com o objeto JSON do produto)
+
+# --- 1. Na Aplicação: Verificar se o produto está em cache ---
+# Comando no redis-cli para simular a verificação (retorna 1 se existe, 0 se não)
+EXISTS cache:product:P123
+
+# --- CENÁRIO A: CACHE HIT (Produto já está em cache) ---
+# Se EXISTS retornar 1, a aplicação faria:
+GET cache:product:P123
+# Isso retornaria o JSON armazenado:
+# "{\"id_produto\": \"P123\", \"nome\": \"Smartphone XYZ\", \"descricao\": \"Smartphone de última geração\", \"preco\": 1999.99, \"categoria\": \"Eletrônicos\", \"marca\": \"XYZ Tech\", \"estoque\": 150, \"data_adicao\": \"2025-07-02T03:00:00.000Z\", \"status\": \"Disponível\"}"
+
+# --- CENÁRIO B: CACHE MISS (Produto NÃO está em cache) ---
+# Se EXISTS retornar 0, a aplicação faria:
+# 1. Simular busca no MongoDB (NÃO É UM COMANDO REDIS)
+#    (Na sua aplicação Python/Node.js, você faria uma query para o MongoDB aqui)
+#    Exemplo de dado hipotético retornado do MongoDB:
+#    product_data_from_db = {
+#        "id_produto": "P123",
+#        "nome": "Smartphone XYZ",
+#        "descricao": "Smartphone de última geração",
+#        "preco": 1999.99,
+#        "categoria": "Eletrônicos",
+#        "marca": "XYZ Tech",
+#        "estoque": 150,
+#        "data_adicao": "2025-07-02T03:00:00.000Z", # MongoDB retorna BSON/Date objects, converter para string para JSON
+#        "status": "Disponível"
+#    }
+#    Converter para JSON string:
+#    product_json_string = json.dumps(product_data_from_db)
+
+# 2. Popular o cache no Redis com o dado obtido do MongoDB
+#    Definir um TTL apropriado para o cache (ex: 3600 segundos = 1 hora)
+SET cache:product:P123 '{"id_produto": "P123", "nome": "Smartphone XYZ", "descricao": "Smartphone de última geração", "preco": 1999.99, "categoria": "Eletrônicos", "marca": "XYZ Tech", "estoque": 150, "data_adicao": "2025-07-02T03:00:00.000Z", "status": "Disponível"}' EX 3600
+
+# --- Verificar se o cache foi populado (após Cache Miss) ---
+GET cache:product:P123
+TTL cache:product:P123
+
+4. Manter um Ranking de Produtos Mais Vistos
+# Usaremos um Sorted Set para este ranking.
+# Chave: ranking:most_viewed_products
+# Membros: ID do produto (string)
+# Scores: Número de visualizações (float/inteiro)
+
+# --- Simular visualização de produtos ---
+# Toda vez que um produto é visualizado, incrementamos seu score no Sorted Set.
+
+# Produto P123 foi visualizado
+ZINCRBY ranking:most_viewed_products 1 "P123"
+# Produto P456 foi visualizado
+ZINCRBY ranking:most_viewed_products 1 "P456"
+# Produto P123 foi visualizado novamente
+ZINCRBY ranking:most_viewed_products 1 "P123"
+# Produto P789 foi visualizado
+ZINCRBY ranking:most_viewed_products 1 "P789"
+# Produto P456 foi visualizado novamente
+ZINCRBY ranking:most_viewed_products 1 "P456"
+# Produto P123 foi visualizado mais uma vez
+ZINCRBY ranking:most_viewed_products 1 "P123"
+
+# --- Obter o ranking dos 5 produtos mais vistos ---
+# ZREVRANGE retorna os membros do Sorted Set em ordem decrescente de score.
+# WITHWITHSCORES inclui o score junto com o membro.
+ZREVRANGE ranking:most_viewed_products 0 4 WITHSCORES
+
+# Exemplo de saída:
+# 1) "P123"
+# 2) "3"
+# 3) "P456"
+# 4) "2"
+# 5) "P789"
+# 6) "1"
+
+# --- Opcional: Definir expiração para o ranking se for recalculado periodicamente ---
+# EXPIRE ranking:most_viewed_products 3600 * 24 # Expira em 24 horas (se o ranking for gerado diariamente)
+
+5. Contar Visualizações de Página de um Produto
+# Usaremos uma String Redis para armazenar a contagem de visualizações de cada produto.
+# Chave: product:views:<ID_DO_PRODUTO>
+# Valor: Contador numérico (String, mas Redis trata como número para INCR)
+
+# --- Simular uma visualização da página do produto P123 ---
+INCR product:views:P123
+
+# --- Simular outra visualização da página do produto P123 ---
+INCR product:views:P123
+
+# --- Simular uma visualização da página do produto P456 ---
+INCR product:views:P456
+
+# --- Obter o número atual de visualizações para o produto P123 ---
+GET product:views:P123
+
+# --- Obter o número atual de visualizações para o produto P456 ---
+GET product:views:P456
+
+# --- Opcional: Definir expiração para o contador, se ele for um contador de período (ex: visualizações diárias) ---
+# EXPIRE product:views:P123 86400 # Expira em 24 horas
