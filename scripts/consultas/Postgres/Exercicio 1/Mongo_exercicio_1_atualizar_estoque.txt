@@ -1,0 +1,13 @@
+// Conectar ao MongoDB
+use trabalho;  // Escolher o banco de dados
+
+// Atualizando o estoque dos produtos
+db.produtos.updateOne(
+  { id_produto: "P123" },  // Encontrar o produto com id_produto 
+  { $inc: { estoque: -2 } }  
+);
+
+db.produtos.updateOne(
+  { id_produto: "P124" },  // Encontrar o produto com id_produto 
+  { $inc: { estoque: -1 } } 
+);

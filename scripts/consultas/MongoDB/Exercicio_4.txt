@@ -1,0 +1,20 @@
+//Listar as avaliações de um produto, ordenadas por data.
+db.produtos.aggregate([
+  {
+    $match: { id_produto: "P123" }  // Substitua "P123" pelo id_produto desejado
+  },
+  {
+    $unwind: "$avaliacoes"  // Desestrutura o array de avaliações para um documento por avaliação
+  },
+  {
+    $sort: { "avaliacoes.data": 1 }  // Ordena as avaliações pela data em ordem crescente (1) ou decrescente (-1)
+  },
+  {
+    $project: {  // Seleciona os campos desejados
+      "avaliacoes.data": 1,
+      "avaliacoes.avaliacao": 1,
+      "avaliacoes.comentario": 1,
+      _id: 0  // Não retorna o _id do produto
+    }
+  }
+])

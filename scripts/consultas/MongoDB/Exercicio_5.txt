@@ -1,0 +1,9 @@
+//Encontrar usuários que tenham uma preferência específica em seu perfil.
+db.perfil_usuario.find({
+  "preferencias": {
+    $elemMatch: {
+      categoria: "Eletrônicos",
+      marca: "XYZ Tech"
+    }
+  }
+})
