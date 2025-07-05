@@ -2,50 +2,53 @@
 # Simular login de um usuário com ID 123
 # Usamos HASH para armazenar múltiplos atributos da sessão.
 # Chave: session:<ID_DA_SESSAO>
-# Valor: Hash com user_id, timestamp de login, timestamp da última atividade, IP, user_agent
-
-# Gerar um ID de sessão único (na aplicação, isso seria um UUID)
-# Para este exemplo manual, usaremos um ID de sessão fixo para demonstração.
-# Digite este comando no seu redis-cli:
+# Valor: Hash com user_id, timestamp de login, timestamp da última atividade
 
 # --- Comando para simular o login ---
-HSET session:user:4b9d3e5c user_id "123" login_time "1720051200" last_activity "1720051200" ip_address "192.168.1.100" user_agent "Chrome/120.0"
-# Definir expiração para a sessão em 3600 segundos (1 hora de inatividade)
+HSET session:user:4b9d3e5c user_id "123" login_time "1720051200" last_activity "1720051200"
+# Definir expiração 1 hora de inatividade
 EXPIRE session:user:4b9d3e5c 3600
 
-# --- Verificações (para confirmar) ---
+# --- Verificando ---
 # Recuperar todos os campos da sessão
 HGETALL session:user:4b9d3e5c
 # Verificar o tempo restante de vida da sessão (em segundos)
 TTL session:user:4b9d3e5c
 
+
+
+
+
 2. Gerenciar um Carrinho de Compras
-# Assumimos um ID de usuário/sessão para o carrinho, por exemplo, 'user:567'.
+# Assumimos um ID de usuário/sessão para o carrinho, por exemplo, 'user:123'.
 # O carrinho será um HASH onde cada campo é um item do produto (ID do produto)
 # e o valor é um JSON string com detalhes do item.
 
 # --- Adicionar itens ao carrinho ---
 # Adicionar 2 unidades do produto P123 (Smartphone XYZ)
-HSET cart:user:567 "P123" '{"quantity": 2, "price_added": 1999.99, "name": "Smartphone XYZ"}'
+HSET cart:user:123 "P123" '{"quantity": 2, "price_added": 1999.99, "name": "Smartphone XYZ"}'
 # Adicionar 1 unidade do produto P456 (Teclado Mecânico)
-HSET cart:user:567 "P456" '{"quantity": 1, "price_added": 350.00, "name": "Teclado Mecânico"}'
+HSET cart:user:123 "P456" '{"quantity": 1, "price_added": 350.00, "name": "Teclado Mecânico"}'
 
 # --- Atualizar a quantidade de um item no carrinho ---
-# (Na aplicação, você leria o JSON, atualizaria a quantidade e faria um novo HSET)
 # Simulando a atualização de P123 para 3 unidades:
-HSET cart:user:567 "P123" '{"quantity": 3, "price_added": 1999.99, "name": "Smartphone XYZ"}'
+HSET cart:user:123 "P123" '{"quantity": 3, "price_added": 1999.99, "name": "Smartphone XYZ"}'
 
 # --- Definir expiração para o carrinho (ex: 24 horas) ---
-EXPIRE cart:user:567 86400
+EXPIRE cart:user:123 86400
 
 # --- Remover um item do carrinho ---
-HDEL cart:user:567 "P456"
+HDEL cart:user:123 "P456"
 
 # --- Visualizar o conteúdo atual do carrinho ---
-HGETALL cart:user:567
+HGETALL cart:user:123
 
 # --- Verificar o tempo restante de vida do carrinho ---
-TTL cart:user:567
+TTL cart:user:123
+
+
+
+
 
 3. Implementar Cache de Produtos
 # Vamos simular o processo para o produto com id_produto: "P123"
@@ -77,8 +80,7 @@ GET cache:product:P123
 
 # --- CENÁRIO B: CACHE MISS (Produto NÃO está em cache) ---
 # Se EXISTS retornar 0, a aplicação faria:
-# 1. Simular busca no MongoDB (NÃO É UM COMANDO REDIS)
-#    (Na sua aplicação Python/Node.js, você faria uma query para o MongoDB aqui)
+# 1. Simular busca no MongoDB
 #    Exemplo de dado hipotético retornado do MongoDB:
 #    product_data_from_db = {
 #        "id_produto": "P123",
@@ -95,12 +97,16 @@ GET cache:product:P123
 #    product_json_string = json.dumps(product_data_from_db)
 
 # 2. Popular o cache no Redis com o dado obtido do MongoDB
-#    Definir um TTL apropriado para o cache (ex: 3600 segundos = 1 hora)
+#    Definir um TTL apropriado para o cache
 SET cache:product:P123 '{"id_produto": "P123", "nome": "Smartphone XYZ", "descricao": "Smartphone de última geração", "preco": 1999.99, "categoria": "Eletrônicos", "marca": "XYZ Tech", "estoque": 150, "data_adicao": "2025-07-02T03:00:00.000Z", "status": "Disponível"}' EX 3600
 
 # --- Verificar se o cache foi populado (após Cache Miss) ---
 GET cache:product:P123
 TTL cache:product:P123
+
+
+
+
 
 4. Manter um Ranking de Produtos Mais Vistos
 # Usaremos um Sorted Set para este ranking.
@@ -139,6 +145,10 @@ ZREVRANGE ranking:most_viewed_products 0 4 WITHSCORES
 
 # --- Opcional: Definir expiração para o ranking se for recalculado periodicamente ---
 # EXPIRE ranking:most_viewed_products 3600 * 24 # Expira em 24 horas (se o ranking for gerado diariamente)
+
+
+
+
 
 5. Contar Visualizações de Página de um Produto
 # Usaremos uma String Redis para armazenar a contagem de visualizações de cada produto.
