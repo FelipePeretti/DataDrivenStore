@@ -1,0 +1,12 @@
+//agrupar por marca e calcular o preço medio e ordenar por preço medio
+db.produtos.aggregate([
+  {
+    $group: {
+      _id: "$marca",               // Agrupar por marca
+      media_preco: { $avg: "$preco" }  // Calcular a média do preço
+    }
+  },
+  {
+    $sort: { media_preco: -1 }       // Ordenar pela média do preço em ordem decrescente
+  }
+]);

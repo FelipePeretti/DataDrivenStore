@@ -1,0 +1,5 @@
+// Conectar ao MongoDB
+use trabalho;  // Escolher o banco de dados
+
+//traz os podutos onde o estoque e menor que 45
+db.produtos.find({ estoque: { $lt: 45 } })

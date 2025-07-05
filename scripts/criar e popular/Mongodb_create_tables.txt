@@ -247,3 +247,43 @@ db.perfil_usuario.insertMany([
     { id_usuario: "user019", nome: "João Lima", email: "joao.lima@email.com", preferencias: [{ categoria: "Eletrônicos", marca: "GamerPro" }], dados_demograficos: { idade: 26, genero: "Masculino", localizacao: "Belém" }, historico_compras: [], ultima_atividade: new Date(), data_registro: new Date(), status: "Ativo" },
     { id_usuario: "user020", nome: "Patrícia Alves", email: "patricia.alves@email.com", preferencias: [{ categoria: "Acessórios", marca: "TimeTech" }], dados_demograficos: { idade: 38, genero: "Feminino", localizacao: "Florianópolis" }, historico_compras: [], ultima_atividade: new Date(), data_registro: new Date(), status: "Ativo" }
 ])
+
+
+//adicionar array com a avaliações dos produtos
+db.produtos.updateMany(
+  {},  // Filtro vazio para afetar todos os documentos
+  { 
+    $set: { 
+      avaliacoes: []  // Adiciona um campo 'avaliacoes' vazio (pode preencher conforme necessidade)
+    } 
+  }
+)
+
+
+//criar algumas avaliações aleatorias
+db.produtos.find().forEach(function(produto) {
+  const avaliacoes = [
+    { avaliacao: 5, comentario: "Excelente produto!" },
+    { avaliacao: 4, comentario: "Muito bom, recomendo!" },
+    { avaliacao: 3, comentario: "Atende minhas expectativas, mas poderia melhorar." },
+    { avaliacao: 2, comentario: "Produto razoável, pode melhorar." },
+    { avaliacao: 1, comentario: "Não gostei, decepcionado." }
+  ];
+
+  // Selecionando uma avaliação aleatória
+  const randomAvaliacao = avaliacoes[Math.floor(Math.random() * avaliacoes.length)];
+
+  // Adicionando a avaliação ao campo 'avaliacoes' do produto
+  db.produtos.updateOne(
+    { _id: produto._id },  // Encontrar o produto pelo _id
+    { 
+      $push: {  // Adiciona a avaliação ao array 'avaliacoes'
+        avaliacoes: {
+          data: new Date(),  // Data atual da avaliação
+          avaliacao: randomAvaliacao.avaliacao,  // Nota da avaliação
+          comentario: randomAvaliacao.comentario  // Comentário da avaliação
+        }
+      }
+    }
+  );
+});

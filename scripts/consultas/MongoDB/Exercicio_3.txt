@@ -1,0 +1,13 @@
+//Adicionar um novo campo a todos os produtos de uma categoria.
+db.produtos.updateMany(
+  { categoria: "Eletrônicos" },              // Condição: selecionar produtos da categoria 'Eletrônicos'
+  [
+    { 
+      $set: { 
+        preco_com_desconto: { 
+          $multiply: [ "$preco", 0.90 ]      // Aplica um desconto de 10% no preço atual
+        } 
+      }
+    }
+  ]
+)

@@ -1,0 +1,5 @@
+//Buscar produtos com atributos específicos (e.g., ‘processador: "i7"‘) e com preço em uma faixa definida.
+db.produtos.find({
+  nome: /Cadeira/,                  
+  preco: { $gte: 800, $lte: 1000 }           // Preço entre 800 e 1000
+})
