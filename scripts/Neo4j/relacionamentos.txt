@@ -1,0 +1,47 @@
+// Relacionamentos Cliente 1
+MATCH (c1:Cliente {id_cliente: "1"})
+MATCH (p1:Produto {id_produto: "P142"}), (p2:Produto {id_produto: "P141"}), (p3:Produto {id_produto: "P139"}), (p4:Produto {id_produto: "P142"}), (p5:Produto {id_produto: "P127"}), 
+      (p6:Produto {id_produto: "P126"}), (p7:Produto {id_produto: "P137"}), (p8:Produto {id_produto: "P123"}), (p9:Produto {id_produto: "P125"}), (p10:Produto {id_produto: "P132"})
+WITH c1, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10
+CREATE (c1)-[:COMPROU]->(p1)
+CREATE (c1)-[:COMPROU]->(p2)
+CREATE (c1)-[:COMPROU]->(p3)
+CREATE (c1)-[:COMPROU]->(p4)
+CREATE (c1)-[:COMPROU]->(p5)
+CREATE (c1)-[:COMPROU]->(p6)
+CREATE (c1)-[:COMPROU]->(p7)
+CREATE (c1)-[:COMPROU]->(p8)
+CREATE (c1)-[:COMPROU]->(p9)
+CREATE (c1)-[:COMPROU]->(p10)
+
+
+// Relacionamentos Cliente 2
+MATCH (c2:Cliente {id_cliente: "2"})
+MATCH (p11:Produto {id_produto: "P126"}), (p12:Produto {id_produto: "P142"}), (p13:Produto {id_produto: "P135"}), (p14:Produto {id_produto: "P139"}), (p15:Produto {id_produto: "P141"}), 
+      (p16:Produto {id_produto: "P125"}), (p17:Produto {id_produto: "P140"}), (p18:Produto {id_produto: "P139"}), (p19:Produto {id_produto: "P125"}), (p20:Produto {id_produto: "P130"})
+WITH c2, p11, p12, p13, p14, p15, p16, p17, p18, p19, p20
+CREATE (c2)-[:COMPROU]->(p11)
+CREATE (c2)-[:COMPROU]->(p12)
+CREATE (c2)-[:COMPROU]->(p13)
+CREATE (c2)-[:COMPROU]->(p14)
+CREATE (c2)-[:COMPROU]->(p15)
+CREATE (c2)-[:COMPROU]->(p16)
+CREATE (c2)-[:COMPROU]->(p17)
+CREATE (c2)-[:COMPROU]->(p18)
+CREATE (c2)-[:COMPROU]->(p19)
+CREATE (c2)-[:COMPROU]->(p20)
+
+
+MATCH (c:Cliente {id_cliente: "1"}), (p:Produto {id_produto: "P123"})
+CREATE (c)-[:FEZ_AVALIACAO {avaliacao: 5}]->(p)
+MATCH (c:Cliente {id_cliente: "2"}), (p:Produto {id_produto: "P124"})
+CREATE (c)-[:FEZ_AVALIACAO {avaliacao: 4}]->(p)
+
+
+
+
+MATCH (c:Cliente {id_cliente: "1"}), (p:Produto {id_produto: "P123"})
+CREATE (c)-[:VISUALIZOU]->(p)
+MATCH (c:Cliente {id_cliente: "1"}), (p:Produto {id_produto: "P124"})
+CREATE (c)-[:VISUALIZOU]->(p)
+

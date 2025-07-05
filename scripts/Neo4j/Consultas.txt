@@ -1,0 +1,100 @@
+1 - Filtragem Colaborativa (Item-Item): "Dado um produto X, encontre outros
+produtos frequentemente comprados juntos".
+MATCH (p:Produto)<-[:COMPROU]-(c:Cliente)-[:COMPROU]->(p2:Produto)
+WHERE p.id_produto = "P123" AND p <> p2
+RETURN p2.nome, COUNT(*) AS freq
+ORDER BY freq DESC
+LIMIT 5
+____________________________________________________________________
+2 - Filtragem Colaborativa (User-User): "Encontre clientes com historico de compra
+similar ao do cliente Y e recomende produtos que eles compraram, mas Y nao".
+
+____________________________________________________________________
+MATCH (c1:Cliente)-[:COMPROU]->(p:Produto)<-[:COMPROU]-(c2:Cliente)
+WHERE c1.id_cliente = "1" AND c1 <> c2
+WITH c2, COLLECT(p) AS produtos_comprados
+MATCH (c1)-[:COMPROU]->(p2:Produto)
+WHERE NOT p2 IN produtos_comprados
+RETURN c2.nome AS Cliente_Similar, COLLECT(p2.nome) AS Produtos_Recomendados
+ORDER BY SIZE(Produtos_Recomendados) DESC
+LIMIT 5
+
+Explicação:
+MATCH (c1:Cliente)-[:COMPROU]->(p:Produto)<-[:COMPROU]-(c2:Cliente):
+Encontra os produtos p comprados por outros clientes (c2) que também foram comprados pelo cliente c1 (o cliente Y).
+c1.id_cliente = "Y" filtra o cliente de interesse (substitua "Y" pelo ID real do cliente).
+O c1 <> c2 assegura que estamos comparando o cliente com outros clientes (não com ele mesmo).
+WITH c2, COLLECT(p) AS produtos_comprados:
+Coleta todos os produtos que os outros clientes (c2) compraram.
+MATCH (c1)-[:COMPROU]->(p2:Produto):
+Encontra todos os produtos que o cliente Y (c1) comprou.
+WHERE NOT p2 IN produtos_comprados:
+Filtra os produtos que o cliente Y comprou e os produtos que os clientes similares compraram, recomendando apenas os produtos que o cliente Y não comprou.
+RETURN c2.nome AS Cliente_Similar, COLLECT(p2.nome) AS Produtos_Recomendados:
+Retorna o nome do cliente similar e a lista de produtos que eles compraram, mas que o cliente Y não comprou.
+ORDER BY SIZE(Produtos_Recomendados) DESC:
+Ordena os resultados pela quantidade de produtos recomendados, para dar prioridade aos clientes com mais semelhanças.
+LIMIT 5:
+Limita os resultados a 5 clientes mais similares.
+
+____________________________________________________________________
+3 - Encontrar o caminho mais curto entre dois produtos através de suas categorias.
+
+MATCH (p1:Produto {id_produto: "P123"}), (p2:Produto {id_produto: "P124"}),
+      path = shortestPath((p1)-[:PERTENCE_A*]-(p2))
+RETURN path
+
+Explicação:
+MATCH (p1:Produto {id_produto: "P123"}), (p2:Produto {id_produto: "P124"}): Encontramos os dois produtos, P123 e P124, com base nos seus IDs. Você pode substituir esses IDs pelos produtos de sua escolha.
+*path = shortestPath((p1)-[:PERTENCE_A]-(p2))**: A função shortestPath encontra o caminho mais curto entre p1 e p2, considerando as categorias (PERTENCE_A) entre eles. O asterisco (*) indica que o caminho pode ter qualquer número de passos (qualquer profundidade de relações PERTENCE_A).
+RETURN path: Retorna o caminho mais curto encontrado entre os dois produtos.
+
+
+____________________________________________________________________
+4- Identificar clientes "influenciadores"(cujas avaliações positivas se correlacionam com
+mais vendas).
+MATCH (c:Cliente)-[:FEZ_AVALIACAO]->(p:Produto)
+WHERE p.avaliacao > 4  // Considerando avaliações positivas acima de 4
+WITH c, COUNT(p) AS influencias
+MATCH (c)-[:COMPROU]->(p2:Produto)
+WITH c, influencias, COUNT(p2) AS vendas
+RETURN c.nome, influencias, vendas
+ORDER BY vendas DESC
+LIMIT 5
+
+Explicação:
+MATCH (c:Cliente)-[:FEZ_AVALIACAO]->(p:Produto):
+Encontra os clientes que fizeram avaliações em produtos.
+WHERE p.avaliacao > 4:
+Filtra os produtos que receberam avaliações positivas (superiores a 4).
+WITH c, COUNT(p) AS influencias:
+Conta quantas avaliações positivas o cliente fez.
+MATCH (c)-[:COMPROU]->(p2:Produto):
+Encontra os produtos que o cliente comprou.
+WITH c, influencias, COUNT(p2) AS vendas:
+Conta o número de vendas associadas aos produtos comprados pelo cliente.
+RETURN c.nome, influencias, vendas:
+Retorna o nome do cliente, o número de influências (avaliações) e o número de vendas associadas.
+ORDER BY vendas DESC:
+Ordena os resultados pela quantidade de vendas associadas.
+LIMIT 5:
+Limita os resultados aos 5 clientes mais influentes.
+
+____________________________________________________________________
+5- Recomendar produtos de categorias que um cliente visualizou, mas das quais ainda
+não comprou.
+
+MATCH (c:Cliente {id_cliente: "1"})-[:VISTO]->(p:Produto)-[:PERTENCE_A]->(cat:Categoria)
+WITH c, COLLECT(cat) AS categorias
+MATCH (c)-[:COMPROU]->(p2:Produto)-[:PERTENCE_A]->(cat2:Categoria)
+WHERE NOT cat2 IN categorias  // Evita que o cliente compre um produto da mesma categoria que ele já visualizou
+WITH c, categorias, p2
+MATCH (p3:Produto)-[:PERTENCE_A]->(cat3:Categoria)
+WHERE cat3 IN categorias AND NOT (c)-[:COMPROU]->(p3)
+RETURN p3.nome AS Produto_Recomendado, cat3.nome AS Categoria
+ORDER BY p3.preco DESC  // Ordenar por preço, ou outro critério
+LIMIT 5
+
+
+
+____________________________________________________________________
